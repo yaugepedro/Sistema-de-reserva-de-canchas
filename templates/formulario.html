@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block hero %}
+<div class="hero hero-corto">
+  <h1>{{ titulo }}</h1>
+</div>
+{% endblock %}
+
+{% block contenido %}
+<form class="formulario panel" method="post">
+  <label class="ancho">Nombre del estudiante
+    <input name="nombre_estudiante" value="{{ r.get('nombre_estudiante', '') }}" required>
+  </label>
+
+  <label>Matrícula (opcional)
+    <input name="matricula" value="{{ r.get('matricula', '') }}" placeholder="2024-0000">
+  </label>
+
+  <label>Cantidad de jugadores
+    <input type="number" name="jugadores" min="1" max="22" value="{{ r.get('jugadores', '') }}" required>
+  </label>
+
+  <div class="ancho">
+    <span class="etiqueta">Cancha</span>
+    <div class="opciones">
+      {% for nombre, info in canchas.items() %}
+      <label class="opcion {{ info.clase }}">
+        <input type="radio" name="cancha" value="{{ nombre }}" {{ 'checked' if r.get('cancha') == nombre }} required>
+        <span>{{ info.icono }} {{ nombre }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <label>Fecha
+    <input type="date" name="fecha" min="{{ hoy }}" value="{{ r.get('fecha', '') }}" required>
+  </label>
+
+  <label>Hora de inicio
+    <input type="time" name="hora" min="07:00" max="21:00" value="{{ r.get('hora', '') }}" required>
+  </label>
+
+  <label class="ancho">Duración
+    <select name="duracion" required>
+      {% for minutos, texto in duraciones.items() %}
+        <option value="{{ minutos }}" {{ 'selected' if r.get('duracion') == minutos }}>{{ texto }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label class="ancho">Notas (opcional)
+    <textarea name="notas" rows="3" maxlength="200" placeholder="Torneo, entrenamiento, material que llevan...">{{ r.get('notas', '') }}</textarea>
+  </label>
+
+  <div class="fila ancho">
+    <button class="btn" type="submit">Guardar reserva</button>
+    <a href="{{ url_for('listar') }}">Volver</a>
+  </div>
+</form>
+{% endblock %}

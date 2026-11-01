@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block hero %}
+<div class="hero hero-corto">
+  <h1>Reserva #{{ r.id }}</h1>
+</div>
+{% endblock %}
+
+{% block contenido %}
+<article class="panel detalle-caja {{ canchas[r.cancha].clase }}">
+  <div class="tarjeta-tope">
+    <span class="chip-cancha">{{ canchas[r.cancha].icono }} {{ r.cancha }}</span>
+    <span class="chip estado-{{ r.estado|lower }}">{{ r.estado }}</span>
+  </div>
+  <p class="detalle-hora">{{ r.hora }} – {{ r.hora_fin }}</p>
+  <p class="tarjeta-dia">{{ r.fecha|fecha_texto }} · {{ r.fecha }}</p>
+
+  <dl class="detalle">
+    <dt>Estudiante</dt><dd>{{ r.nombre_estudiante }}</dd>
+    <dt>Matrícula</dt><dd>{{ r.matricula or '—' }}</dd>
+    <dt>Jugadores</dt><dd>{{ r.jugadores }}</dd>
+    <dt>Duración</dt><dd>{{ r.duracion|duracion_texto }}</dd>
+    <dt>Notas</dt><dd>{{ r.notas or '—' }}</dd>
+  </dl>
+
+  <div class="fila">
+    {% if r.estado == 'Activa' %}
+      <a class="btn" href="{{ url_for('editar', reserva_id=r.id) }}">Editar</a>
+      <form method="post" action="{{ url_for('cancelar', reserva_id=r.id) }}"
+            onsubmit="return confirm('¿Cancelar esta reserva?')">
+        <button class="btn btn-claro" type="submit">Cancelar</button>
+      </form>
+    {% else %}
+      <form method="post" action="{{ url_for('reactivar', reserva_id=r.id) }}">
+        <button class="btn" type="submit">Reactivar</button>
+      </form>
+    {% endif %}
+    <form method="post" action="{{ url_for('eliminar', reserva_id=r.id) }}"
+          onsubmit="return confirm('¿Eliminar esta reserva definitivamente?')">
+      <button class="link peligro" type="submit">Eliminar</button>
+    </form>
+    <a href="{{ url_for('listar') }}">Volver a la lista</a>
+  </div>
+</article>
+{% endblock %}

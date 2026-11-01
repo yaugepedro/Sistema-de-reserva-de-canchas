@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canchas del campus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="contenedor">
+      <nav class="nav">
+        <a class="marca" href="{{ url_for('listar') }}">Canchas del campus</a>
+        <a class="btn btn-pelota" href="{{ url_for('crear') }}">+ Nueva reserva</a>
+      </nav>
+      {% block hero %}{% endblock %}
+    </div>
+  </header>
+
+  <main class="contenedor">
+    {% for categoria, mensaje in get_flashed_messages(with_categories=true) %}
+      <p class="aviso {{ categoria }}" role="status">{{ mensaje }}</p>
+    {% endfor %}
+    {% block contenido %}{% endblock %}
+  </main>
+</body>
+</html>

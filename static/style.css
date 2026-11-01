@@ -1,0 +1,416 @@
+:root {
+  --fondo: #eef3ef;
+  --papel: #ffffff;
+  --tinta: #0f2a22;
+  --suave: #5b6f66;
+  --linea: #d9e3dc;
+  --verde: #0e7a4f;
+  --verde-oscuro: #0a5a3a;
+  --cesped: #0f3d2e;
+  --pelota: #f2c230;
+  --error: #b3261e;
+  --futbol: #1f9d55;
+  --baloncesto: #e8742c;
+  --voleibol: #3b7ddd;
+  --tenis: #b89b00;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--tinta);
+  line-height: 1.5;
+}
+
+a { color: var(--verde); }
+
+.contenedor {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+main.contenedor { padding-bottom: 3rem; }
+
+.cabecera {
+  position: relative;
+  overflow: hidden;
+  background: var(--cesped);
+  color: #fff;
+}
+
+.cabecera::before {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -110px;
+  width: 300px;
+  height: 300px;
+  border: 3px solid rgba(255, 255, 255, .14);
+  border-radius: 50%;
+}
+
+.cabecera::after {
+  content: "";
+  position: absolute;
+  right: 80px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(255, 255, 255, .14);
+}
+
+.cabecera .contenedor { position: relative; z-index: 1; }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.marca {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  letter-spacing: -.01em;
+}
+
+.hero { padding: 1.5rem 0 2.6rem; }
+.hero-corto { padding: .8rem 0 1.8rem; }
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+
+.hero p {
+  margin: .5rem 0 0;
+  color: rgba(255, 255, 255, .8);
+  max-width: 46ch;
+}
+
+.btn {
+  display: inline-block;
+  padding: .6rem 1.1rem;
+  border: 2px solid var(--verde);
+  border-radius: 10px;
+  background: var(--verde);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover { background: var(--verde-oscuro); border-color: var(--verde-oscuro); }
+
+.btn-pelota {
+  background: var(--pelota);
+  border-color: var(--pelota);
+  color: var(--cesped);
+}
+
+.btn-pelota:hover { background: #ffd24d; border-color: #ffd24d; }
+
+.btn-claro {
+  background: var(--papel);
+  border-color: var(--linea);
+  color: var(--tinta);
+}
+
+.btn-claro:hover { background: var(--fondo); border-color: var(--suave); }
+
+.texto-error { color: var(--error); }
+
+:focus-visible { outline: 3px solid var(--pelota); outline-offset: 2px; }
+
+.aviso {
+  margin: 1.2rem 0 0;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  border-left: 6px solid;
+  background: var(--papel);
+  font-weight: 600;
+}
+
+.aviso.ok { border-color: var(--verde); }
+.aviso.error { border-color: var(--error); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .8rem;
+  margin-top: -1.4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  padding: .9rem 1rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+}
+
+.stat strong { font-size: 2rem; line-height: 1.1; font-weight: 800; }
+.stat span { color: var(--suave); font-size: .9rem; }
+
+.panel {
+  margin-top: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+}
+
+.panel h2 { margin: 0 0 .8rem; font-size: 1.05rem; }
+
+.demanda {
+  display: grid;
+  grid-template-columns: 140px 1fr 32px;
+  gap: .8rem;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.demanda strong { text-align: right; }
+
+.pista {
+  height: 12px;
+  background: var(--fondo);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.relleno { height: 100%; border-radius: 99px; transition: width .3s; }
+.relleno.futbol { background: var(--futbol); }
+.relleno.baloncesto { background: var(--baloncesto); }
+.relleno.voleibol { background: var(--voleibol); }
+.relleno.tenis { background: var(--tenis); }
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  font-weight: 600;
+  font-size: .92rem;
+}
+
+input, select, textarea {
+  padding: .55rem .7rem;
+  border: 1px solid var(--linea);
+  border-radius: 8px;
+  background: var(--papel);
+  color: var(--tinta);
+  font: inherit;
+  font-weight: 400;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  align-items: end;
+}
+
+.campo-busqueda { flex: 1 1 200px; }
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.fila form { margin: 0; }
+
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: 1rem 0;
+}
+
+.herramientas form { margin: 0; }
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+.futbol { --c: var(--futbol); }
+.baloncesto { --c: var(--baloncesto); }
+.voleibol { --c: var(--voleibol); }
+.tenis { --c: var(--tenis); }
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-top: 6px solid var(--c);
+  border-radius: 14px;
+}
+
+.tarjeta.inactiva { opacity: .65; }
+
+.tarjeta-tope {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+
+.chip-cancha { font-weight: 700; }
+
+.chip {
+  padding: .1rem .6rem;
+  border-radius: 99px;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.estado-activa { background: #dff3e8; color: var(--verde-oscuro); }
+.estado-cancelada { background: #f6e0de; color: var(--error); }
+
+.tarjeta-dia { margin: .8rem 0 0; color: var(--suave); font-weight: 600; }
+
+.tarjeta-hora {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.tarjeta-nombre { margin: .5rem 0 0; font-weight: 600; }
+.tarjeta-datos { margin: 0; color: var(--suave); font-size: .9rem; }
+
+.tarjeta-notas {
+  margin: .5rem 0 0;
+  padding: .4rem .6rem;
+  background: var(--fondo);
+  border-radius: 8px;
+  font-size: .9rem;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  align-items: center;
+  margin-top: auto;
+  padding-top: .9rem;
+}
+
+.acciones form { margin: 0; }
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--verde);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.peligro { color: var(--error); }
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 640px;
+  margin-top: 1.2rem;
+}
+
+.ancho { grid-column: 1 / -1; }
+
+.etiqueta {
+  display: block;
+  margin-bottom: .3rem;
+  font-weight: 600;
+  font-size: .92rem;
+}
+
+.opciones { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.opcion { position: relative; flex-direction: row; }
+
+.opcion input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opcion span {
+  display: inline-block;
+  padding: .5rem 1rem;
+  border: 2px solid var(--linea);
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.opcion input:checked + span {
+  background: var(--c);
+  border-color: var(--c);
+  color: #fff;
+}
+
+.opcion input:focus-visible + span { outline: 3px solid var(--pelota); outline-offset: 2px; }
+
+.detalle-caja {
+  max-width: 560px;
+  margin-top: 1.2rem;
+  border-top: 6px solid var(--c);
+}
+
+.detalle-hora {
+  margin: .8rem 0 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.detalle {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: .4rem 1rem;
+  margin: 1rem 0 1.2rem;
+}
+
+.detalle dt { color: var(--suave); font-weight: 600; }
+.detalle dd { margin: 0; }
+
+.vacio {
+  margin-top: 1rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  background: var(--papel);
+  border: 2px dashed var(--linea);
+  border-radius: 14px;
+}
+
+@media (max-width: 720px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .formulario { grid-template-columns: 1fr; }
+  .demanda { grid-template-columns: 110px 1fr 28px; }
+  .cabecera::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

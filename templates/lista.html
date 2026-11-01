@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block hero %}
+<div class="hero">
+  <h1>Reserva tu cancha</h1>
+  <p>Fútbol, baloncesto, voleibol y tenis, todos los días de 7:00 a 22:00.</p>
+</div>
+{% endblock %}
+
+{% block contenido %}
+<section class="stats">
+  <article class="stat"><strong>{{ stats.total }}</strong><span>Reservas</span></article>
+  <article class="stat"><strong>{{ stats.activas }}</strong><span>Activas</span></article>
+  <article class="stat"><strong>{{ stats.hoy }}</strong><span>Para hoy</span></article>
+  <article class="stat"><strong>{{ stats.canceladas }}</strong><span>Canceladas</span></article>
+</section>
+
+<section class="panel">
+  <h2>Demanda por cancha</h2>
+  {% for nombre, info in canchas.items() %}
+  <div class="demanda">
+    <span class="demanda-nombre">{{ info.icono }} {{ nombre }}</span>
+    <progress class="barra-demanda {{ info.clase }}" value="{{ demanda[nombre].pct }}" max="100"></progress>
+    <strong>{{ demanda[nombre].total }}</strong>
+  </div>
+  {% endfor %}
+</section>
+
+<form class="filtros panel" method="get">
+  <label class="campo-busqueda">Buscar
+    <input type="search" name="q" value="{{ q }}" placeholder="Nombre o matrícula">
+  </label>
+  <label>Cancha
+    <select name="cancha">
+      <option value="">Todas</option>
+      {% for nombre in canchas %}
+        <option value="{{ nombre }}" {{ 'selected' if nombre == cancha }}>{{ nombre }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Estado
+    <select name="estado">
+      <option value="">Todos</option>
+      <option value="Activa" {{ 'selected' if estado == 'Activa' }}>Activa</option>
+      <option value="Cancelada" {{ 'selected' if estado == 'Cancelada' }}>Cancelada</option>
+    </select>
+  </label>
+  <label>Fecha
+    <input type="date" name="fecha" value="{{ fecha }}">
+  </label>
+  <label>Ordenar por
+    <select name="orden">
+      <option value="fecha" {{ 'selected' if orden == 'fecha' }}>Fecha y hora</option>
+      <option value="reciente" {{ 'selected' if orden == 'reciente' }}>Más recientes</option>
+      <option value="nombre" {{ 'selected' if orden == 'nombre' }}>Nombre</option>
+    </select>
+  </label>
+  <div class="fila">
+    <button class="btn" type="submit">Aplicar</button>
+    {% if hay_filtros %}<a href="{{ url_for('listar') }}">Limpiar</a>{% endif %}
+  </div>
+</form>
+
+<div class="herramientas">
+  <a class="btn btn-claro" href="{{ url_for('exportar') }}">Exportar CSV</a>
+  <form method="post" action="{{ url_for('ejemplos') }}">
+    <button class="btn btn-claro" type="submit">Cargar ejemplos</button>
+  </form>
+  {% if stats.total %}
+  <form method="post" action="{{ url_for('vaciar') }}"
+        onsubmit="return confirm('¿Eliminar TODAS las reservas?')">
+    <button class="btn btn-claro texto-error" type="submit">Vaciar todo</button>
+  </form>
+  {% endif %}
+</div>
+
+{% if reservas %}
+<section class="tarjetas">
+  {% for r in reservas %}
+  <article class="tarjeta {{ canchas[r.cancha].clase }} {{ 'inactiva' if r.estado == 'Cancelada' }}">
+    <div class="tarjeta-tope">
+      <span class="chip-cancha">{{ canchas[r.cancha].icono }} {{ r.cancha }}</span>
+      <span class="chip estado-{{ r.estado|lower }}">{{ r.estado }}</span>
+    </div>
+    <p class="tarjeta-dia">{{ r.fecha|fecha_texto }}</p>
+    <p class="tarjeta-hora">{{ r.hora }} – {{ r.hora_fin }}</p>
+    <p class="tarjeta-nombre">{{ r.nombre_estudiante }}</p>
+    <p class="tarjeta-datos">
+      {% if r.matricula %}{{ r.matricula }} · {% endif %}{{ r.jugadores }} jugadores · {{ r.duracion|duracion_texto }}
+    </p>
+    {% if r.notas %}<p class="tarjeta-notas">{{ r.notas }}</p>{% endif %}
+    <div class="acciones">
+      <a href="{{ url_for('detalle', reserva_id=r.id) }}">Ver</a>
+      {% if r.estado == 'Activa' %}
+        <a href="{{ url_for('editar', reserva_id=r.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('cancelar', reserva_id=r.id) }}"
+              onsubmit="return confirm('¿Cancelar esta reserva?')">
+          <button class="link" type="submit">Cancelar</button>
+        </form>
+      {% else %}
+        <form method="post" action="{{ url_for('reactivar', reserva_id=r.id) }}">
+          <button class="link" type="submit">Reactivar</button>
+        </form>
+      {% endif %}
+      <form method="post" action="{{ url_for('eliminar', reserva_id=r.id) }}"
+            onsubmit="return confirm('¿Eliminar esta reserva definitivamente?')">
+        <button class="link peligro" type="submit">Eliminar</button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section class="vacio">
+  {% if hay_filtros %}
+    <p>Ninguna reserva coincide con esos filtros.</p>
+    <a class="btn" href="{{ url_for('listar') }}">Quitar filtros</a>
+  {% else %}
+    <p>Todavía no hay reservas. Crea la primera o carga unas de ejemplo.</p>
+    <a class="btn" href="{{ url_for('crear') }}">Nueva reserva</a>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}
